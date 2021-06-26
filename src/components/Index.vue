@@ -22,10 +22,10 @@
       </p>
       <p style="font-family: 'Times New Roman';font-weight: bold;font-size: 20px" align="center">Abstract. </p>
       <p style="text-indent: 20px">
-        Humans can envision a realistic photo given a free-hand sketch that is not only spatially imprecise and geometrically distorted but also without colors and visual details. We study unsupervised sketch to photo synthesis for the first time, learning from unpaired sketch and photo data where the target photo for a sketch is unknown during train- ing. Existing works only deal with either style difference or spatial defor- mation alone, synthesizing photos from edge-aligned line drawings or transforming shapes within the same modality, e.g., color images.
+        Humans can envision a realistic photo given a freehand sketch that is not only spatially imprecise and geometrically distorted but also without colors and visual details. We study unsupervised sketch to photo synthesis for the first time, learning from unpaired sketch and photo data where the target photo for a sketch is unknown during training. Existing works only deal with either style difference or spatial deformation alone, synthesizing photos from edge-aligned line drawings or transforming shapes within the same modality, e.g., color images.
       </p>
       <p style="text-indent: 20px">
-        Our insight is to decompose the unsupervised sketch to photo syn- thesis task into two stages of translation: First shape translation from sketches to grayscale photos and then content enrichment from grayscale to color photos. We also incorporate a self-supervised denoising objec- tive and an attention module to handle abstraction and style variations that are specific to sketches. Our synthesis is sketch-faithful and photo- realistic, enabling sketch-based image retrieval and automatic sketch gen- eration that captures human visual perception beyond the edge map of a photo.
+        Our insight is to decompose the unsupervised sketch to photo synthesis task into two stages of translation: First shape translation from sketches to grayscale photos and then content enrichment from grayscale to color photos. We also incorporate a self-supervised denoising objective and an attention module to handle abstraction and style variations that are specific to sketches. Our synthesis is sketch-faithful and photorealistic, enabling sketch-based image retrieval and automatic sketch gen- eration that captures human visual perception beyond the edge map of a photo.
       </p>
       <el-row>
         <el-col :span="8">
