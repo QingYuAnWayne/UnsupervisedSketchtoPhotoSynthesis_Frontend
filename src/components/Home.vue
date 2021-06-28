@@ -63,6 +63,8 @@
 import image1 from '@/assets/examples/1.png'
 import VueSelectImage from 'vue-select-image';
 import { fabric } from "fabric";
+import axios from "axios";
+
 require('vue-select-image/dist/vue-select-image.css')
 export default {
   name: "Home",
@@ -74,6 +76,7 @@ export default {
       isDraw: '',
       isEraser: '',
       log: [],
+      exception: false,
       isRedoing: false,
       isSelect: false,
       references: [{
@@ -124,7 +127,24 @@ export default {
         top: 0,
         format: 'png',
       });
-      this.image = dataURL
+      axios.post('http://localhost:8000/transfer', {
+        input_image: dataURL
+      }).then(res=>{
+        if(res.data.code === 200)
+        {
+          this.image = res.data.output_image
+        }
+        else
+        {
+          if (this.exception)
+            alert('error!')
+          else
+            console.log('error!')
+        }
+      }).catch(error=>{
+        console.log(error)
+      })
+
     },
     Eraser(){
       this.isDraw = ''
@@ -164,7 +184,7 @@ export default {
       this.canvas.centerObject(image)
       this.canvas.add(image)
       this.canvas.renderAll()
-    },
+    }
   }
 }
 </script>
