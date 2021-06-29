@@ -117,7 +117,8 @@ export default {
         format: 'png',
       });
       axios.post('http://localhost:8000/transform', {
-        input_image: dataURL
+        input_image: dataURL,
+        reference: this.imageSelected
       }).then(res=>{
         if(res.data.status === 200)
         {
@@ -158,8 +159,7 @@ export default {
       }
     },
     onSelectImage: function (data) {
-      console.log('fire event onSelectImage: ', data)
-      this.imageSelected = data
+      this.imageSelected = data.src.split('/reference/')[1]
       this.isSelect = false
     },
     onSelectExample: function (data) {
