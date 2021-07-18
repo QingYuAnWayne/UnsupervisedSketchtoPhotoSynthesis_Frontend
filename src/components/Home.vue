@@ -2,32 +2,26 @@
   <el-container>
     <el-main>
       <p style="font-family: 'Times New Roman';font-size: 35px;font-weight: bold;color: #003E3E" align="center">Unsupervised Sketch to Photo Synthesis Demo</p>
-
         <el-row>
-          <el-col :span="12">
-            <div style="height: 100px">
-            <div align="center" style="margin: 10px">
-              <el-button @click="Draw" :type=isDraw>Draw</el-button>
-              <el-button @click="Eraser" :type="isEraser">Eraser</el-button>
-              <el-button @click="Transfer" type="success">Transfer</el-button>
-            </div>
-            <div align="center" style="margin: 10px">
-              <el-button @click="selectExample">Select Examples</el-button>
+          <div align="center" style="margin-bottom: 50px">
+              <el-button @click="Draw" :type=isDraw style="margin-right: 10px">Draw</el-button>
+              <el-popover placement="top-start" width="200">
+                <el-slider v-model="value1" v-show="isEraser" :min="1" :max="100"></el-slider>
+                <div style="font-size: 10px">Eraser Size</div>
+                <div class="EraserSize" id="EraserSize"></div>
+                <el-button @click="Eraser" :type="isEraser" slot="reference" style="margin-right: 10px">Eraser</el-button>
+              </el-popover>
               <el-button @click="Del">Clear</el-button>
               <el-button @click="redoDraw">Redo</el-button>
               <el-button @click="undoDraw">Undo</el-button>
+              <el-button @click="Transfer" type="success" style="margin-top: 10px">Transfer</el-button>
             </div>
-            </div>
+          <el-col :span="12">
             <el-card align="center" style="height: 550px">
               <canvas id="canvas" width="512" height="512" style="border-style: dashed"></canvas>
             </el-card>
           </el-col>
           <el-col :span="12">
-            <div style="height: 100px">
-              <div align="center" style="margin: 10px">
-                <el-button @click="selectRef">Select References</el-button>
-              </div>
-            </div>
             <el-card style="height: 550px">
               <div style="border-style: dashed;height: 512px;width: 512px;margin: auto">
                 <el-image v-show="isShow" style="height: 512px;width: 512px" :src="'data:image/png;base64,'+this.image"></el-image>
@@ -35,25 +29,23 @@
             </el-card>
           </el-col>
         </el-row>
+      <el-divider></el-divider>
       <div>
-        <h3></h3>
-
+        <div style="font-size: 30px;font-family: 'Times New Roman'">Select Examples
+         <el-button round type="primary" size="mini" style="float: right" @click="getExample"><i class="el-icon-refresh"></i>More</el-button>
+        </div>
+        <vue-select-image :dataImages="examples" @onselectimage="onSelectExample" :h="220" :w="220">
+        </vue-select-image>
+      </div>
+      <el-divider></el-divider>
+      <div>
+        <div style="font-size: 30px;font-family: 'Times New Roman'">Select Reference
+          <el-button round type="primary" size="mini" style="float: right" @click="getRef"><i class="el-icon-refresh"></i>More</el-button>
+        </div>
+        <vue-select-image :dataImages="references" @onselectimage="onSelectImage" :h="220" :w="220">
+        </vue-select-image>
       </div>
     </el-main>
-    <el-drawer
-        title="Select Examples"
-        :append-to-body="true"
-        :visible.sync="isExamples">
-      <vue-select-image :dataImages="examples" @onselectimage="onSelectExample">
-      </vue-select-image>
-    </el-drawer>
-    <el-drawer
-        title="Select Reference"
-        :append-to-body="true"
-        :visible.sync="isSelect">
-      <vue-select-image :dataImages="references" @onselectimage="onSelectImage">
-      </vue-select-image>
-    </el-drawer>
   </el-container>
 </template>
 
@@ -82,7 +74,8 @@ export default {
       references: [],
       imageSelected: [],
       isExamples:false,
-      examples: []
+      examples: [],
+      value1: 10,
     }
   },
   mounted() {
@@ -93,8 +86,36 @@ export default {
         this.log = [];
       }
     });
-    this.getExample()
-    this.getRef()
+    this.examples = []
+    var url = this.publicPath + 'sketch/'
+    for(var i = 0; i<5;i++)
+    {
+      var num = [2,44,66,88,99];
+      this.examples.push(
+          {
+            id: i,
+            src: url+num[i].toString()+'.png'
+          })
+    }
+    this.references = []
+    url = this.publicPath + 'reference/'
+    for(i = 0; i<5;i++)
+    {
+      num = [0,2,9,75,55];
+      this.references.push(
+          {
+            id: i,
+            src: url+num[i].toString()+'.png'
+          })
+    }
+  },
+  watch:{
+    value1: function(){
+      var ele = document.getElementById('EraserSize')
+      ele.style.height = this.value1+ 'px'
+      ele.style.width = this.value1 + 'px'
+      this.canvas.freeDrawingBrush.width = this.value1
+    }
   },
   methods:{
     Draw(){
@@ -141,8 +162,8 @@ export default {
     Eraser(){
       this.isDraw = ''
       this.isEraser = 'primary'
-      this.canvas.freeDrawingBrush.width = 10
       this.canvas.isDrawingMode = true
+      this.canvas.freeDrawingBrush.width = this.value1
       this.canvas.freeDrawingBrush.color = "#FFFFFF"
     },
     undoDraw(){
@@ -178,7 +199,7 @@ export default {
     getExample(){
       this.examples = []
       var url = this.publicPath + 'sketch/'
-      for(var i = 0; i<20;i++)
+      for(var i = 0; i<5;i++)
       {
         var num = Math.round(Math.random() * 665);
         this.examples.push(
@@ -191,7 +212,7 @@ export default {
     getRef(){
       this.references = []
       var url = this.publicPath + 'reference/'
-      for(var i = 0; i<20;i++)
+      for(var i = 0; i<5;i++)
       {
         var num = Math.round(Math.random() * 665);
         this.references.push(
@@ -212,4 +233,12 @@ export default {
 </script>
 
 <style scoped>
+.EraserSize{
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+}
 </style>
