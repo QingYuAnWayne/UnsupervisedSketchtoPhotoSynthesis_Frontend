@@ -34,7 +34,7 @@
         <div style="font-size: 30px;font-family: 'Times New Roman'">Select Examples
          <el-button round type="primary" size="mini" style="float: right" @click="getExample"><i class="el-icon-refresh"></i>More</el-button>
         </div>
-        <vue-select-image :dataImages="examples" @onselectimage="onSelectExample" :h="220" :w="220">
+        <vue-select-image :dataImages="examples" @onselectimage="onSelectExample" :h="210" :w="210" ref="select">
         </vue-select-image>
       </div>
       <el-divider></el-divider>
@@ -42,7 +42,7 @@
         <div style="font-size: 30px;font-family: 'Times New Roman'">Select Reference
           <el-button round type="primary" size="mini" style="float: right" @click="getRef"><i class="el-icon-refresh"></i>More</el-button>
         </div>
-        <vue-select-image :dataImages="references" @onselectimage="onSelectImage" :h="220" :w="220">
+        <vue-select-image :dataImages="references" @onselectimage="onSelectImage" :h="210" :w="210">
         </vue-select-image>
       </div>
     </el-main>
@@ -128,6 +128,9 @@ export default {
     },
     Del() {
       this.canvas.clear()
+      this.$refs.select.removeFromSingleSelected()
+      // this.$refs.select.$emit("removeFromSingleSelected")
+
     },
     Transfer(){
       const dataURL = this.canvas.toDataURL({
