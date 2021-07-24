@@ -1,6 +1,14 @@
 <template>
   <el-container>
     <el-main>
+      <el-popover placement="top-start" width="600" trigger="hover">
+        <div style="float: left;font-size: 20px;font-family: 'Times New Roman'">
+          Step1: Draw a freehand drawing of a shoe or select an example on the <br>bottom;<br>
+          Step2: Select a reference on the bottom to determine the color and texture;<br>
+          Step3: Click 'Transform' to get a real shoe picture.
+        </div>
+        <el-button type="info" slot="reference" style="float: left" plain>Guidance</el-button>
+      </el-popover>
       <p style="font-family: 'Times New Roman';font-size: 35px;font-weight: bold;color: #003E3E" align="center">Unsupervised Sketch to Photo Synthesis Demo</p>
         <el-row>
           <div align="center" style="margin-bottom: 50px">
