@@ -1,24 +1,44 @@
 <template>
   <el-container>
     <el-main>
-      <el-popover placement="top-start" width="600" trigger="hover">
-        <div style="float: left;font-size: 20px;font-family: 'Times New Roman'">
-          Step1: Draw a freehand drawing of a shoe or select an example on the <br>bottom;<br>
+      <el-dialog
+          :visible.sync="visible"
+          width="60%"
+      >
+        <div style="font-size: 30px;font-family: 'Times New Roman';text-align: left" slot="title">
+          Guidance
+        </div>
+        <div style="font-size: 20px;font-family: 'Times New Roman';text-align: left">
+          Step1: Draw a freehand drawing of a shoe or select an example on the bottom;<br>
           Step2: Select a reference on the bottom to determine the color and texture;<br>
           Step3: Click 'Transform' to get a real shoe picture.
         </div>
-        <el-button type="info" slot="reference" style="float: left" plain>Guidance</el-button>
-      </el-popover>
+        <div slot="footer">
+          <el-button type="primary" @click="visible = !visible">
+            OK
+          </el-button>
+        </div>
+      </el-dialog>
+
       <p style="font-family: 'Times New Roman';font-size: 35px;font-weight: bold;color: #003E3E" align="center">Unsupervised Sketch to Photo Synthesis Demo</p>
         <el-row>
           <div align="center" style="margin-bottom: 50px">
-              <el-button @click="Draw" :type=isDraw style="margin-right: 10px">Draw</el-button>
+            <el-button type="info" @click="visible = !visible" plain>Guidance</el-button>
+
+            <el-popover placement="top-start" width="200">
+              <el-slider v-model="value2" v-show="isDraw" :min="3" :max="20"></el-slider>
+              <div style="font-size: 10px">Brush Size</div>
+              <div class="BrushSize" id="BrushSize"></div>
+              <el-button @click="Draw" :type=isDraw slot="reference" style="margin-right: 10px;margin-left: 10px">Draw</el-button>
+            </el-popover>
+
               <el-popover placement="top-start" width="200">
                 <el-slider v-model="value1" v-show="isEraser" :min="1" :max="100"></el-slider>
                 <div style="font-size: 10px">Eraser Size</div>
                 <div class="EraserSize" id="EraserSize"></div>
                 <el-button @click="Eraser" :type="isEraser" slot="reference" style="margin-right: 10px">Eraser</el-button>
               </el-popover>
+
               <el-button @click="Del">Clear</el-button>
               <el-button @click="redoDraw">Redo</el-button>
               <el-button @click="undoDraw">Undo</el-button>
@@ -84,6 +104,8 @@ export default {
       isExamples:false,
       examples: [],
       value1: 10,
+      value2: 3,
+      visible: true
     }
   },
   mounted() {
@@ -123,6 +145,12 @@ export default {
       ele.style.height = this.value1+ 'px'
       ele.style.width = this.value1 + 'px'
       this.canvas.freeDrawingBrush.width = this.value1
+    },
+    value2: function(){
+      var ele = document.getElementById('BrushSize')
+      ele.style.height = this.value2 + 'px'
+      ele.style.width = this.value2 + 'px'
+      this.canvas.freeDrawingBrush.width = this.value2
     }
   },
   methods:{
@@ -249,6 +277,14 @@ export default {
   border-radius: 50%;
   width: 10px;
   height: 10px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+}
+.BrushSize{
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 3px;
+  height: 3px;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
 }
