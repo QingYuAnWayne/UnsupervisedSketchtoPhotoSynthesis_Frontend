@@ -9,9 +9,9 @@
           Guidance
         </div>
         <div style="font-size: 20px;font-family: 'Times New Roman';text-align: left">
-          Step1: Draw a freehand drawing of a shoe or select an example on the bottom;<br>
-          Step2: Select a reference on the bottom to determine the color and texture;<br>
-          Step3: Click 'Transform' to get a real shoe picture.
+          <a style="font-weight: bold">Step1:</a> Draw a freehand drawing of a shoe or select an example on the bottom;<br>
+          <a style="font-weight: bold">Step2:</a> Select a reference on the bottom to determine the color and texture;<br>
+          <a style="font-weight: bold">Step3:</a> Click 'Transfer' to get a real shoe picture.
         </div>
         <div slot="footer">
           <el-button type="primary" @click="visible = !visible">
@@ -69,8 +69,9 @@
       <div>
         <div style="font-size: 30px;font-family: 'Times New Roman'">Select Reference
           <el-button round type="primary" size="mini" style="float: right" @click="getRef"><i class="el-icon-refresh"></i>More</el-button>
+          <el-button plain type="danger" style="float: right;margin-right: 20px" size="mini" @click="ClearRef">Clear Reference</el-button>
         </div>
-        <vue-select-image :dataImages="references" @onselectimage="onSelectImage" :h="210" :w="210">
+        <vue-select-image :dataImages="references" @onselectimage="onSelectImage" :h="210" :w="210" ref="reference">
         </vue-select-image>
       </div>
     </el-main>
@@ -261,11 +262,9 @@ export default {
             })
       }
     },
-    selectExample(){
-      this.isExamples=true;
-    },
-    selectRef(){
-      this.isSelect=true
+    ClearRef(){
+      this.$refs.reference.removeFromSingleSelected()
+      this.imageSelected = []
     }
   }
 }
