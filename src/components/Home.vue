@@ -43,6 +43,8 @@
               <el-button @click="redoDraw">Redo</el-button>
               <el-button @click="undoDraw">Undo</el-button>
               <el-button @click="Transfer" type="success" style="margin-top: 10px">Transfer</el-button>
+              <el-button @click="Save" :disabled="!isShow">Save</el-button>
+
             </div>
           <el-col :span="12">
             <el-card align="center" style="height: 550px">
@@ -265,6 +267,14 @@ export default {
     ClearRef(){
       this.$refs.reference.removeFromSingleSelected()
       this.imageSelected = []
+    },
+    Save(){
+      const link = document.createElement('a');
+      link.download = 'canvas.png';
+      link.href = this.image;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   }
 }
