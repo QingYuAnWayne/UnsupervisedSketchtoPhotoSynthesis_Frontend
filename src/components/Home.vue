@@ -1,57 +1,115 @@
 <template>
   <el-container>
-    <el-main>
-      <el-dialog
-          :visible.sync="visible"
-          width="60%"
-      >
-        <div style="font-size: 30px;font-family: 'Times New Roman';text-align: left" slot="title">
-          Guidance
-        </div>
-        <div style="font-size: 20px;font-family: 'Times New Roman';text-align: left">
-          <a style="font-weight: bold">Step1:</a> Draw a freehand drawing of a shoe or select an example on the bottom;<br>
-          <a style="font-weight: bold">Step2:</a> Select a reference on the bottom to determine the color and texture;<br>
-          <a style="font-weight: bold">Step3:</a> Click 'Transfer' to get a real shoe picture.
-        </div>
-        <div slot="footer">
-          <el-button type="primary" @click="visible = !visible">
-            OK
+    <el-header style="height: 20%">
+        <div style="float: left">
+          <el-button @click="drawer=true"
+                     style="background-color: #f6a8c0; color: white;font-size: 20px" round>
+            ?
           </el-button>
         </div>
-      </el-dialog>
+        <div style="float: right">
+          <el-button style="background-color: #6fa6d8;" round>
+            <a href="https://arxiv.org/pdf/1909.08313.pdf" style="color: white;font-family: 'Times New Roman';font-weight: bold;font-size: 20px">Paper</a>
+          </el-button>
+          <el-button style="background-color: #4164a1;" round>
+            <a href="https://github.com/rt219/Unsupervised-Sketch-to-Photo-Synthesis" style="color: white;font-family: 'Times New Roman';font-weight: bold;font-size: 20px">Code</a>
+          </el-button>
+        </div>
+      <el-drawer
+          size="100%"
+          :visible.sync="drawer"
+          :with-header="false">
+        <div style="width: 100%;height: 100%; background-color: #f6b8a6">
+          <el-button @click="drawer=false"
+                     style="background-color: white; color: #f6b8a6;
+                       font-size: 20px;float: right;margin-right: 1%;
+                       margin-top: 1%" round>
+            X
+          </el-button>
+          <div style="font-size: 40px;padding-top: 10%;color: #582d2d" align="center">
+            Guidance
+            <div style="font-size: 35px;font-family: 'Times New Roman';text-align: left;width: 80%">
+              <p>
+                <a style="font-weight: bold;">Step1:</a> Draw a freehand drawing of a shoe or select an example on the bottom;<br>
+              </p>
+              <p>
+                <a style="font-weight: bold">Step2:</a> Select a reference on the bottom to determine the color and texture;<br>
+              </p>
+              <p>
+                <a style="font-weight: bold">Step3:</a> Click 'Transfer' to get a real shoe picture.
+              </p>
+            </div>
+          </div>
+        </div>
+      </el-drawer>
 
-      <p style="font-family: 'Times New Roman';font-size: 35px;font-weight: bold;color: #003E3E" align="center">Unsupervised Sketch to Photo Synthesis Demo</p>
+    </el-header>
+    <el-main>
+      <div v-show="isShowLogo">
+        <div align="center">
+          <img src="@/assets/Draw_Pic.png" style="width: 30%">
+          <h1>
+            This is the Slogan?
+          </h1>
+          <h3>
+            <p>
+              This is the Slogan.This is the Slogan.This is the Slogan.This is the Slogan.This is the Slogan.
+            </p>
+            <p>
+              This is the Slogan.This is the Slogan.This is the Slogan.This is the Slogan.This is the Slogan.
+            </p>
+          </h3>
+          <el-button type="warning" @click="isShowLogo = !isShowLogo">
+            <div style="font-size: 20px">
+              Try ME!
+            </div>
+          </el-button>
+        </div>
+      </div>
+      <div v-show="!isShowLogo">
+        <div align="center">
+          <img src="@/assets/Sketch.png" style="width: 30%">
+          <img src="@/assets/Logo_11.png" style="width: 30%">
+          <img src="@/assets/Shoes.png" style="width: 30%">
+        </div>
         <el-row>
-          <div align="center" style="margin-bottom: 50px">
-            <el-button type="info" @click="visible = !visible" plain>Guidance</el-button>
-
-            <el-popover placement="top-start" width="200">
-              <el-slider v-model="value2" v-show="isDraw" :min="3" :max="20"></el-slider>
-              <div style="font-size: 10px">Brush Size</div>
-              <div class="BrushSize" id="BrushSize"></div>
-              <el-button @click="Draw" :type=isDraw slot="reference" style="margin-right: 10px;margin-left: 10px">Draw</el-button>
-            </el-popover>
-
+          <el-col :span="2">
+            <el-menu >
+              <el-popover placement="top-start" width="200">
+                  <el-slider v-model="value2" v-show="isDraw" :min="3" :max="20"></el-slider>
+                  <div style="font-size: 10px">Brush Size</div>
+                  <div class="BrushSize" id="BrushSize"></div>
+                  <el-button @click="Draw" :type=isDraw slot="reference" style="width: 100px;margin-bottom: 15px" round>
+                    Draw
+                  </el-button>
+                </el-popover>
               <el-popover placement="top-start" width="200">
                 <el-slider v-model="value1" v-show="isEraser" :min="1" :max="100"></el-slider>
                 <div style="font-size: 10px">Eraser Size</div>
                 <div class="EraserSize" id="EraserSize"></div>
-                <el-button @click="Eraser" :type="isEraser" slot="reference" style="margin-right: 10px">Eraser</el-button>
+                <el-button @click="Eraser" style="width: 100px;margin-bottom: 24px" :type="isEraser" slot="reference" round>Eraser</el-button>
               </el-popover>
+              <el-button @click="Del"  style="width: 100px;margin-bottom: 24px" round>Clear</el-button>
+              <div style="margin-left: -10px">
+                <el-button @click="redoDraw" style="width: 100px;margin-bottom: 25px;margin-left: 10px" round>Redo</el-button>
+                <el-button @click="undoDraw" style="width: 100px;margin-bottom: 25px" round>Undo</el-button>
+                <el-button @click="ShowExample=true" style="width: 100px;margin-bottom: 24px" round>Example</el-button>
+                <el-button @click="ShowReference=true" style="width: 100px;margin-bottom: 24px" round>Reference</el-button>
+                <el-button @click="Transfer" type="success" style="width: 100px;margin-bottom: 24px" round>
+                  Transfer
+                </el-button>
+                <el-button @click="Save" :disabled="!isShow" style="width: 100px" round>Save</el-button>
 
-              <el-button @click="Del">Clear</el-button>
-              <el-button @click="redoDraw">Redo</el-button>
-              <el-button @click="undoDraw">Undo</el-button>
-              <el-button @click="Transfer" type="success" style="margin-top: 10px">Transfer</el-button>
-              <el-button @click="Save" :disabled="!isShow">Save</el-button>
+              </div>
+            </el-menu>
+          </el-col>
 
-            </div>
-          <el-col :span="12">
+          <el-col :span="11">
             <el-card align="center" style="height: 550px">
               <canvas id="canvas" width="512" height="512" style="border-style: dashed"></canvas>
             </el-card>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="11">
             <el-card style="height: 550px">
               <div style="border-style: dashed;height: 512px;width: 512px;margin: auto">
                 <el-image v-show="isShow" style="height: 512px;width: 512px" :src="'data:image/png;base64,'+this.image"></el-image>
@@ -59,22 +117,32 @@
             </el-card>
           </el-col>
         </el-row>
-      <el-divider></el-divider>
-      <div>
-        <div style="font-size: 30px;font-family: 'Times New Roman'">Select Examples
-         <el-button round type="primary" size="mini" style="float: right" @click="getExample"><i class="el-icon-refresh"></i>More</el-button>
-        </div>
-        <vue-select-image :dataImages="examples" @onselectimage="onSelectExample" :h="210" :w="210" ref="select">
-        </vue-select-image>
-      </div>
-      <el-divider></el-divider>
-      <div>
-        <div style="font-size: 30px;font-family: 'Times New Roman'">Select Reference
-          <el-button round type="primary" size="mini" style="float: right" @click="getRef"><i class="el-icon-refresh"></i>More</el-button>
-          <el-button plain type="danger" style="float: right;margin-right: 20px" size="mini" @click="ClearRef">Clear Reference</el-button>
-        </div>
-        <vue-select-image :dataImages="references" @onselectimage="onSelectImage" :h="210" :w="210" ref="reference">
-        </vue-select-image>
+        <el-drawer
+            size="20%"
+            :visible.sync="ShowExample"
+            direction="rtl">
+          <div slot="title" style="margin-bottom: -25px">
+            <div style="font-size: 30px;font-family: 'Times New Roman';color: black">Select Examples</div>
+            <el-button style="float: left" round type="primary" size="mini" @click="getExample"><i class="el-icon-refresh"></i>More</el-button>
+          </div>
+          <div>
+            <vue-select-image :dataImages="examples" @onselectimage="onSelectExample" :h="210" :w="210" ref="select">
+            </vue-select-image>
+          </div>
+        </el-drawer>
+        <el-drawer size="20%"
+           :visible.sync="ShowReference"
+           direction="rtl">
+          <div slot="title" style="margin-bottom: -25px">
+            <div style="font-size: 30px;font-family: 'Times New Roman';color: black">Select Reference</div>
+            <el-button-group>
+              <el-button round type="primary" style="width: 80px" size="mini" @click="getRef"><i class="el-icon-refresh"></i>More</el-button>
+              <el-button round type="danger" style="width: 120px" size="mini" @click="ClearRef">Clear Reference</el-button>
+            </el-button-group>
+          </div>
+          <vue-select-image :dataImages="references" @onselectimage="onSelectImage" :h="210" :w="210" ref="reference">
+          </vue-select-image>
+        </el-drawer>
       </div>
     </el-main>
   </el-container>
@@ -108,7 +176,11 @@ export default {
       examples: [],
       value1: 10,
       value2: 3,
-      visible: true
+      visible: true,
+      isShowLogo: true,
+      drawer: false,
+      ShowExample: false,
+      ShowReference: false
     }
   },
   mounted() {
