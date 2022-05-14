@@ -26,17 +26,18 @@
                        margin-top: 1%" round>
             X
           </el-button>
-          <div style="font-size: 40px;padding-top: 10%;color: #582d2d" align="center">
+          <div style="font-size: 40px;padding-top: 10%;font-family:'Bradley Hand';color: #582d2d" align="center">
             Guidance
-            <div style="font-size: 35px;font-family: 'Times New Roman';text-align: left;width: 80%">
+            <div style="font-size: 35px;text-align: left;width: 80%">
               <p>
-                <a style="font-weight: bold;">Step1:</a> Draw a freehand drawing of a shoe or select an example on the bottom;<br>
+                <a style="font-weight: bold;">Step1:</a> Draw a sketch image or directly select one from examples provided on the bottom;<br>
               </p>
               <p>
-                <a style="font-weight: bold">Step2:</a> Select a reference on the bottom to determine the color and texture;<br>
+                <a style="font-weight: bold">Step 2 (optional):</a>Select a reference image listed on the side to control the color and texture of the synthesised shoe;
+                <br>
               </p>
               <p>
-                <a style="font-weight: bold">Step3:</a> Click 'Transfer' to get a real shoe picture.
+                <a style="font-weight: bold">Step3:</a> Click “Translate’ button and get your designed shoe!
               </p>
             </div>
           </div>
@@ -48,17 +49,9 @@
       <div v-show="isShowLogo">
         <div align="center">
           <img src="@/assets/Draw_Pic.png" style="width: 30%">
-          <h1>
-            This is the Slogan?
+          <h1 style="font-family: 'Gill Sans'">
+            Want your personalized shoes?
           </h1>
-          <h3>
-            <p>
-              This is the Slogan.This is the Slogan.This is the Slogan.This is the Slogan.This is the Slogan.
-            </p>
-            <p>
-              This is the Slogan.This is the Slogan.This is the Slogan.This is the Slogan.This is the Slogan.
-            </p>
-          </h3>
           <el-button type="warning" @click="isShowLogo = !isShowLogo">
             <div style="font-size: 20px">
               Try ME!
