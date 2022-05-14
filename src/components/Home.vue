@@ -26,7 +26,7 @@
                        margin-top: 1%" round>
             X
           </el-button>
-          <div style="font-size: 40px;padding-top: 10%;font-family:'Bradley Hand';color: #582d2d" align="center">
+          <div style="font-size: 40px;padding-top: 10%;font-family:'BH',serif;color: #582d2d" align="center">
             Guidance
             <div style="font-size: 35px;text-align: left;width: 80%">
               <p>
@@ -49,7 +49,7 @@
       <div v-show="isShowLogo">
         <div align="center">
           <img src="@/assets/Draw_Pic.png" style="width: 30%">
-          <h1 style="font-family: 'Gill Sans'">
+          <h1 style="font-family: 'GS'">
             Want your personalized shoes?
           </h1>
           <el-button type="warning" @click="isShowLogo = !isShowLogo">
